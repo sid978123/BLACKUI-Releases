@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-primary: #08090B;
+    --bg-secondary: #0D0F12;
+    --surface-elevated: #121419;
+    --surface-hover: #191C22;
+    --text-primary: #F5F5F6;
+    --text-secondary: #A0A3AB;
+    --text-muted: #707580;
+    --border-primary: rgba(255, 255, 255, 0.09);
+    --border-strong: rgba(255, 255, 255, 0.15);
+    --accent-primary: #C6B6FF;
+    --accent-secondary: #A99AF5;
+    --accent-warm: #D8C4A0;
+    --accent-gold: #E6BD78;
+    
+    color-scheme: dark;
+  }
+
+  * {
+    border-color: var(--border-primary);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    overflow-x: hidden;
+  }
+}
+
+/* Linear-inspired typography */
+.font-mono-code {
+  font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Linear Ambient Glows */
+.hero-glow {
+  background: radial-gradient(
+    circle 800px at 50% -10%,
+    rgba(198, 182, 255, 0.07) 0%,
+    rgba(169, 154, 245, 0.03) 40%,
+    transparent 80%
+  );
+}
+
+.hero-glow-secondary {
+  background: radial-gradient(
+    ellipse 600px 300px at 50% 100%,
+    rgba(216, 196, 160, 0.04) 0%,
+    transparent 70%
+  );
+}
+
+.section-glow {
+  background: radial-gradient(
+    ellipse 500px 300px at 50% 0%,
+    rgba(255, 255, 255, 0.02) 0%,
+    transparent 70%
+  );
+}
+
+/* Linear subtle grain / noise simulation via CSS */
+.subtle-grid {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+}
+
+/* Glass panel */
+.glass-panel {
+  background: rgba(18, 20, 25, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.glass-panel-elevated {
+  background: rgba(25, 28, 34, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Subtle border animation or shine */
+.border-gradient-subtle {
+  border-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0.05)
+  ) 1;
+}
+
+/* Hide scrollbars while allowing scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
