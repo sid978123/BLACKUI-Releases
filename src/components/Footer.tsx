@@ -1,11 +1,13 @@
 import { DotMatrixWordmark } from './DotMatrixWordmark';
-import { BLACKUI_RELEASES } from '../config/releases';
-import { ShieldCheck, Download, Monitor, Smartphone } from 'lucide-react';
+import { BLACKUI_RELEASES, GITHUB_CONFIG, getGitHubDownloadUrl } from '../config/releases';
+import { ShieldCheck, Download, Monitor, Smartphone, ExternalLink } from 'lucide-react';
 
 interface FooterProps {
   onOpenChecksums: () => void;
   onOpenSideloadGuide: () => void;
 }
+
+const CURRENT_YEAR = new Date().getFullYear();
 
 export const Footer: React.FC<FooterProps> = ({ onOpenChecksums, onOpenSideloadGuide }) => {
   return (
@@ -53,6 +55,17 @@ export const Footer: React.FC<FooterProps> = ({ onOpenChecksums, onOpenSideloadG
                   FAQ &amp; Architecture
                 </a>
               </li>
+              <li>
+                <a
+                  href={GITHUB_CONFIG.repoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#F5F5F6] transition-colors inline-flex items-center gap-1 text-[#C6B6FF]"
+                >
+                  <span>GitHub Repository</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -64,8 +77,9 @@ export const Footer: React.FC<FooterProps> = ({ onOpenChecksums, onOpenSideloadG
             <ul className="space-y-2 text-xs">
               <li>
                 <a
-                  href={BLACKUI_RELEASES.windows.standardExe.downloadUrl}
-                  download="BLACKUI-1.0.0.exe"
+                  href={getGitHubDownloadUrl(BLACKUI_RELEASES.windows.standardExe.expectedFilename)}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="hover:text-[#F5F5F6] transition-colors flex items-center gap-1.5"
                 >
                   <Monitor className="w-3.5 h-3.5 text-[#C6B6FF]" />
@@ -74,8 +88,9 @@ export const Footer: React.FC<FooterProps> = ({ onOpenChecksums, onOpenSideloadG
               </li>
               <li>
                 <a
-                  href={BLACKUI_RELEASES.windows.installerMsi.downloadUrl}
-                  download="BLACKUI-1.0.0.msi"
+                  href={getGitHubDownloadUrl(BLACKUI_RELEASES.windows.installerMsi.expectedFilename)}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="hover:text-[#F5F5F6] transition-colors flex items-center gap-1.5"
                 >
                   <Download className="w-3.5 h-3.5 text-[#A0A3AB]" />
@@ -84,8 +99,9 @@ export const Footer: React.FC<FooterProps> = ({ onOpenChecksums, onOpenSideloadG
               </li>
               <li>
                 <a
-                  href={BLACKUI_RELEASES.android.apk.downloadUrl}
-                  download="BLACKUI-1.0.0.apk"
+                  href={getGitHubDownloadUrl(BLACKUI_RELEASES.android.apk.expectedFilename)}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="hover:text-[#F5F5F6] transition-colors flex items-center gap-1.5"
                 >
                   <Smartphone className="w-3.5 h-3.5 text-[#C6B6FF]" />
@@ -95,10 +111,21 @@ export const Footer: React.FC<FooterProps> = ({ onOpenChecksums, onOpenSideloadG
               <li>
                 <button
                   onClick={onOpenSideloadGuide}
-                  className="hover:text-[#F5F5F6] transition-colors text-left"
+                  className="hover:text-[#F5F5F6] transition-colors text-left cursor-pointer"
                 >
                   APK Installation Guide
                 </button>
+              </li>
+              <li>
+                <a
+                  href={GITHUB_CONFIG.releasesUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#F5F5F6] transition-colors inline-flex items-center gap-1 text-[#C6B6FF]"
+                >
+                  <span>All GitHub Releases</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
               </li>
             </ul>
           </div>
@@ -112,7 +139,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenChecksums, onOpenSideloadG
               <li>
                 <button
                   onClick={onOpenChecksums}
-                  className="hover:text-[#F5F5F6] transition-colors flex items-center gap-1.5 text-left"
+                  className="hover:text-[#F5F5F6] transition-colors flex items-center gap-1.5 text-left cursor-pointer"
                 >
                   <ShieldCheck className="w-3.5 h-3.5 text-[#82C9A0]" />
                   <span>SHA-256 Checksums</span>
@@ -134,16 +161,23 @@ export const Footer: React.FC<FooterProps> = ({ onOpenChecksums, onOpenSideloadG
         {/* Bottom Sub-bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono-code text-[#707580]">
           <div>
-            &copy; {new Date().getFullYear()} BLACKUI. Media utility for Windows &amp; Android.
+            &copy; {CURRENT_YEAR} BLACKUI. Media utility for Windows &amp; Android.
           </div>
           <div className="flex items-center gap-4">
-            <button onClick={onOpenChecksums} className="hover:text-[#A0A3AB] transition-colors">
+            <button onClick={onOpenChecksums} className="hover:text-[#A0A3AB] transition-colors cursor-pointer">
               Verify Binaries
             </button>
             <span>&bull;</span>
-            <span>Jetpack Compose Native</span>
+            <a
+              href={GITHUB_CONFIG.repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#A0A3AB] transition-colors"
+            >
+              GitHub Source
+            </a>
             <span>&bull;</span>
-            <span>Offline-First Architecture</span>
+            <span>Jetpack Compose Native</span>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { X, Smartphone, Check, Copy, AlertTriangle, ShieldCheck, Download } from 'lucide-react';
-import { BLACKUI_RELEASES } from '../config/releases';
+import { BLACKUI_RELEASES, getGitHubDownloadUrl } from '../config/releases';
 
 interface SideloadModalProps {
   isOpen: boolean;
@@ -36,7 +36,7 @@ export const SideloadModal: React.FC<SideloadModalProps> = ({ isOpen, onClose })
     {
       num: '1',
       title: 'Download the APK',
-      desc: 'Save BLACKUI-1.0.0.apk directly to your Android device via Chrome, Firefox, or your chosen browser.',
+      desc: `Save ${BLACKUI_RELEASES.android.apk.expectedFilename} directly to your Android device via Chrome, Firefox, or your chosen browser.`,
     },
     {
       num: '2',
@@ -74,13 +74,13 @@ export const SideloadModal: React.FC<SideloadModalProps> = ({ isOpen, onClose })
                 Android APK Sideloading Guide
               </h3>
               <p className="text-xs font-mono-code text-[#A0A3AB]">
-                Package: {BLACKUI_RELEASES.android.apk.filename} ({BLACKUI_RELEASES.android.apk.fileSize})
+                Package: {BLACKUI_RELEASES.android.apk.expectedFilename} ({BLACKUI_RELEASES.android.apk.fileSize})
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-[#A0A3AB] hover:text-white rounded-lg hover:bg-white/[0.06] transition-colors"
+            className="p-1.5 text-[#A0A3AB] hover:text-white rounded-lg hover:bg-white/[0.06] transition-colors cursor-pointer"
             aria-label="Close dialog"
           >
             <X className="w-5 h-5" />
@@ -154,13 +154,14 @@ export const SideloadModal: React.FC<SideloadModalProps> = ({ isOpen, onClose })
         <div className="p-4 sm:p-6 border-t border-white/[0.08] bg-[#121419] flex flex-col sm:flex-row items-center justify-between gap-3">
           <button
             onClick={onClose}
-            className="w-full sm:w-auto px-4 py-2 text-xs font-mono-code text-[#A0A3AB] hover:text-white transition-colors"
+            className="w-full sm:w-auto px-4 py-2 text-xs font-mono-code text-[#A0A3AB] hover:text-white transition-colors cursor-pointer"
           >
             Close
           </button>
           <a
-            href={BLACKUI_RELEASES.android.apk.downloadUrl}
-            download="BLACKUI-1.0.0.apk"
+            href={getGitHubDownloadUrl(BLACKUI_RELEASES.android.apk.expectedFilename)}
+            target="_blank"
+            rel="noopener noreferrer"
             onClick={onClose}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 text-xs font-semibold text-[#08090B] bg-[#F5F5F6] hover:bg-white rounded-lg transition-all"
           >

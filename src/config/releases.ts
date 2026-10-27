@@ -1,8 +1,17 @@
-export interface ReleaseAsset {
+/**
+ * ============================================================================
+ * BLACKUI Centralized Release & Distribution Configuration
+ * ============================================================================
+ * 
+ * Configures the GitHub repository, expected release assets, fallback
+ * metadata, and cryptographic checksums for installer distribution.
+ */
+
+export interface ReleaseAssetConfig {
   platform: 'windows' | 'android';
   title: string;
-  filename: string;
-  downloadUrl: string;
+  expectedFilename: string;
+  fallbackFilename: string;
   extension: '.exe' | '.msi' | '.apk';
   version: string;
   releaseDate: string;
@@ -10,27 +19,37 @@ export interface ReleaseAsset {
   sha256: string;
   minRequirements: string;
   architecture: string;
-  isAvailable: boolean;
   notes?: string;
+}
+
+export interface GitHubRepoConfig {
+  owner: string;
+  repo: string;
+  defaultTag: string;
+  repoUrl: string;
+  releasesUrl: string;
+  latestReleasePageUrl: string;
+  apiUrl: string;
 }
 
 export interface BlackUiReleasesConfig {
   latestVersion: string;
   releaseDate: string;
   tag: string;
+  github: GitHubRepoConfig;
+  siteUrl: string;
   windows: {
     title: string;
     description: string;
     requirements: string;
-    standardExe: ReleaseAsset;
-    installerMsi: ReleaseAsset;
+    standardExe: ReleaseAssetConfig;
+    installerMsi: ReleaseAssetConfig;
   };
   android: {
     title: string;
     description: string;
     requirements: string;
-    playStoreUrl?: string; // Currently direct verified APK
-    apk: ReleaseAsset;
+    apk: ReleaseAssetConfig;
   };
   coreEngine: {
     extractor: string;
@@ -40,10 +59,40 @@ export interface BlackUiReleasesConfig {
   };
 }
 
+// Read centralized configuration from Vite environment variables (with safe fallbacks)
+const GITHUB_OWNER = import.meta.env.VITE_GITHUB_REPO_OWNER || 'sid978123';
+const GITHUB_REPO = import.meta.env.VITE_GITHUB_REPO_NAME || 'BLACKUI';
+const GITHUB_DEFAULT_TAG = import.meta.env.VITE_GITHUB_DEFAULT_TAG || 'v1.0.0';
+const SITE_URL = import.meta.env.VITE_SITE_URL || 'https://blackui.vercel.app';
+
+const repoUrl = `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}`;
+const releasesUrl = `${repoUrl}/releases`;
+const latestReleasePageUrl = `${releasesUrl}/latest`;
+const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest`;
+
+export const GITHUB_CONFIG: GitHubRepoConfig = {
+  owner: GITHUB_OWNER,
+  repo: GITHUB_REPO,
+  defaultTag: GITHUB_DEFAULT_TAG,
+  repoUrl,
+  releasesUrl,
+  latestReleasePageUrl,
+  apiUrl,
+};
+
+/**
+ * Generate direct GitHub Release asset download URL
+ */
+export function getGitHubDownloadUrl(filename: string, tag: string = GITHUB_DEFAULT_TAG): string {
+  return `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/releases/download/${tag}/${filename}`;
+}
+
 export const BLACKUI_RELEASES: BlackUiReleasesConfig = {
   latestVersion: "1.0.0",
   releaseDate: "October 2026",
-  tag: "v1.0.0-stable",
+  tag: GITHUB_DEFAULT_TAG,
+  github: GITHUB_CONFIG,
+  siteUrl: SITE_URL,
   windows: {
     title: "BLACKUI for Windows",
     description: "Native desktop media utility engineered with Jetpack Compose Multiplatform. Fast, hardware-accelerated interface with embedded yt-dlp & FFmpeg pipeline.",
@@ -51,8 +100,8 @@ export const BLACKUI_RELEASES: BlackUiReleasesConfig = {
     standardExe: {
       platform: "windows",
       title: "Windows Standalone Setup (.exe)",
-      filename: "BLACKUI-1.0.0.exe",
-      downloadUrl: "/downloads/BLACKUI-1.0.0.exe",
+      expectedFilename: "BLACKUI-Setup.exe",
+      fallbackFilename: "BLACKUI-1.0.0.exe",
       extension: ".exe",
       version: "1.0.0",
       releaseDate: "2026-10-27",
@@ -60,14 +109,13 @@ export const BLACKUI_RELEASES: BlackUiReleasesConfig = {
       sha256: "F51EC679E4E93B130E6332AE4FB881C85723AFABA18C35589F5184F4BDE928D3",
       minRequirements: "Windows 10 / 11 (x64)",
       architecture: "x86_64 / x64",
-      isAvailable: true,
       notes: "Recommended for individual desktop users. Includes user-level auto-updates."
     },
     installerMsi: {
       platform: "windows",
       title: "Windows Installer Package (.msi)",
-      filename: "BLACKUI-1.0.0.msi",
-      downloadUrl: "/downloads/BLACKUI-1.0.0.msi",
+      expectedFilename: "BLACKUI-Setup.msi",
+      fallbackFilename: "BLACKUI-1.0.0.msi",
       extension: ".msi",
       version: "1.0.0",
       releaseDate: "2026-10-27",
@@ -75,7 +123,6 @@ export const BLACKUI_RELEASES: BlackUiReleasesConfig = {
       sha256: "D4780D4DB0FCD1A98A8A5EEFC0ED9DC7975D0E36B733514FC157713708F5E530",
       minRequirements: "Windows 10 / 11 (x64)",
       architecture: "x86_64 / x64",
-      isAvailable: true,
       notes: "WiX standard Windows Installer. Recommended for custom directory installs."
     }
   },
@@ -83,12 +130,11 @@ export const BLACKUI_RELEASES: BlackUiReleasesConfig = {
     title: "BLACKUI for Android",
     description: "Fully native Android application built with modern Jetpack Compose. Clean edge-to-edge dark theme, background download service, and integrated format selector.",
     requirements: "Android 8.0 (Oreo, API Level 26) or later. Compatible with phones and tablets.",
-    playStoreUrl: undefined, // Truthful: No fabricated Play Store listing
     apk: {
       platform: "android",
       title: "Official Android Package (.apk)",
-      filename: "BLACKUI-1.0.0.apk",
-      downloadUrl: "/downloads/BLACKUI-1.0.0.apk",
+      expectedFilename: "BLACKUI-Android.apk",
+      fallbackFilename: "BLACKUI-1.0.0.apk",
       extension: ".apk",
       version: "1.0.0",
       releaseDate: "2026-10-26",
@@ -96,7 +142,6 @@ export const BLACKUI_RELEASES: BlackUiReleasesConfig = {
       sha256: "7F87EFFA5C611BA6BF84DBBA18835F467C387A0B336C40BD5098BDD11A26341C",
       minRequirements: "Android 8.0+ (ARM64-v8a, ARMeabi-v7a, x86_64)",
       architecture: "Universal (arm64-v8a, armeabi-v7a, x86, x86_64)",
-      isAvailable: true,
       notes: "Standalone direct APK build with full offline extraction binaries."
     }
   },
