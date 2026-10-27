@@ -23,7 +23,7 @@ export const Showcase: React.FC = () => {
       heading: 'Instant format inspection from any supported stream',
       description:
         'Paste any supported media link. BLACKUI automatically queries the underlying extractor to parse all available video streams, container formats, audio bitrates, and subtitles in milliseconds.',
-      screenshot: '/assets/screen_now.png',
+      screenshot: '/assets/blackui_extractor.png',
       alt: 'BLACKUI Main Extractor Interface',
       features: [
         'Automatic URL clipboard detection',
@@ -40,7 +40,7 @@ export const Showcase: React.FC = () => {
       heading: 'Real-time telemetry and download management',
       description:
         'Follow active downloads with clear transfer rates, byte progress, and estimated time of arrival. Background services ensure jobs continue smoothly even when switching applications.',
-      screenshot: '/assets/vanta_queue.png',
+      screenshot: '/assets/blackui_queue.png',
       alt: 'BLACKUI Download Queue and Status',
       features: [
         'Concurrent queue execution control',
@@ -57,7 +57,7 @@ export const Showcase: React.FC = () => {
       heading: 'All your downloaded media organized in one place',
       description:
         'Keep downloaded files easily accessible. Open directly in your preferred system media player or manage local files without cluttering your system folders.',
-      screenshot: '/assets/vanta_library.png',
+      screenshot: '/assets/blackui_library.png',
       alt: 'BLACKUI Media Library',
       features: [
         'Instant folder access and system file reveal',
@@ -74,7 +74,7 @@ export const Showcase: React.FC = () => {
       heading: 'Under-the-hood control and automated engine updates',
       description:
         'BLACKUI is built on a modular engine architecture with automated yt-dlp over-the-air updates to ensure extractors stay working when media platforms roll out changes.',
-      screenshot: '/assets/vanta_settings.png',
+      screenshot: '/assets/blackui_settings.png',
       alt: 'BLACKUI Settings and Engine Configuration',
       features: [
         'Automatic OTA yt-dlp binary synchronizer',

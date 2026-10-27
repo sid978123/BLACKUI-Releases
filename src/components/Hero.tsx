@@ -308,7 +308,7 @@ export const Hero: React.FC<HeroProps> = ({ onSelectPlatform }) => {
                   <span className="w-2 h-2 rounded-full bg-white/[0.1]" />
                 </div>
                 <img
-                  src="/assets/vanta_home.png"
+                  src="/assets/blackui_home.png"
                   alt="BLACKUI Mobile Interface"
                   className="w-full h-auto rounded-2xl object-cover shadow-inner"
                   loading="lazy"
