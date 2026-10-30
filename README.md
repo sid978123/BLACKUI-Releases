@@ -28,10 +28,16 @@ The website uses GitHub Releases as its installer delivery system:
 
 ### Dynamic GitHub Releases Sync
 
-The site automatically inspects `https://api.github.com/repos/{owner}/{repo}/releases/latest`:
-- **When live**: Downloads link directly to GitHub's CDN assets with live byte sizes.
-- **When pending**: Buttons point to the configured GitHub release URL while clearly indicating publication status.
-- **When rate-limited or offline**: Seamlessly displays cached release configuration without errors or broken UI.
+BLACKUI automatically retrieves release information from its official GitHub repository:
+
+https://api.github.com/repos/sid978123/BLACKUI-Releases/releases/latest
+
+- **When published:** Download buttons link directly to the corresponding GitHub release assets. The website dynamically displays the actual version, filename, and file size.
+- **When awaiting publication:** Buttons use the configured GitHub Releases page and clearly indicate that the download is not yet available.
+- **When offline or rate-limited:** The website falls back to cached release metadata, displays the last successful synchronization time, and keeps the download interface functional.
+- **Platform-specific assets:** Windows users receive EXE/MSI installers, while Android users receive APK files. Never mix platform downloads.
+
+All release information is retrieved dynamically. No permanent version numbers or download URLs are hardcoded.
 
 ---
 
